@@ -59,12 +59,14 @@ export default function AiDeductSection() {
   );
 }
 
-async function parseReceiptMock(file: File) {
+async function parseReceiptMock(file: File): Promise<{ name: string; quantity: number }> {
   const filename = file.name.replace(/\.[^.]+$/, '');
   const match = filename.match(/(.+)[-_ ](\d+)$/);
   if (match) {
     return { name: match[1].replace(/[-_]/g, ' ').trim(), quantity: Number(match[2]) };
   }
 
-  return new Promise((resolve) => setTimeout(() => resolve({ name: 'Corn Seeds', quantity: 5 }), 800));
+  return new Promise<{ name: string; quantity: number }>((resolve) =>
+    setTimeout(() => resolve({ name: 'Corn Seeds', quantity: 5 }), 800)
+  );
 }
