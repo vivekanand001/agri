@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { useProduct } from '@/context/ProductContext';
-import { CheckCircle2, Edit2, Save, Seedling, FlaskConical, Bug } from 'lucide-react';
+import { CheckCircle2, Edit2, Save, Leaf, FlaskConical, Bug } from 'lucide-react';
 
 const iconMap = {
-  Seeds: Seedling,
+  Seeds: Leaf,
   Fertilizer: FlaskConical,
   Pesticides: Bug,
 };
