@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agri Inventory Manager</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Agri Shop</p>
+        <h1>Inventory & Pricing</h1>
+      </div>
+      <button id="modeToggle" class="icon-button" aria-label="Toggle dark mode">🌙</button>
+    </header>
+
+    <main class="page-content">
+      <section id="homeView" class="view active">
+        <div class="section-card">
+          <div class="section-title">
+            <h2>Master Search</h2>
+            <p>Search any product instantly.</p>
+          </div>
+          <div class="search-wrapper">
+            <input id="searchInput" type="search" placeholder="Search products by name..." />
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-title">
+            <h2>All Products</h2>
+            <p>Manage pricing and stock in real time.</p>
+          </div>
+          <div id="productList" class="product-list"></div>
+        </div>
+      </section>
+
+      <section id="categoriesView" class="view">
+        <div class="section-card category-tabs">
+          <button class="tab-button active" data-category="Seeds">Seeds</button>
+          <button class="tab-button" data-category="Fertilizers">Fertilizers</button>
+          <button class="tab-button" data-category="Pesticides">Pesticides</button>
+        </div>
+
+        <div class="section-card">
+          <div class="section-title">
+            <h2 id="categoryTitle">Seeds</h2>
+            <p>Tap edit to adjust price or stock.</p>
+          </div>
+          <div id="categoryProductList" class="product-list"></div>
+        </div>
+      </section>
+
+      <section id="createView" class="view">
+        <div class="section-card">
+          <div class="section-title">
+            <h2>Add New Product</h2>
+            <p>Create products quickly for your shop.</p>
+          </div>
+          <form id="createForm" class="form-grid">
+            <label>
+              Product Name
+              <input id="newName" required type="text" placeholder="e.g. Corn Seed" />
+            </label>
+            <label>
+              Category
+              <select id="newCategory" required>
+                <option value="Seeds">Seeds</option>
+                <option value="Fertilizers">Fertilizers</option>
+                <option value="Pesticides">Pesticides</option>
+              </select>
+            </label>
+            <label>
+              Price
+              <input id="newPrice" required type="number" step="0.01" min="0" placeholder="0.00" />
+            </label>
+            <label>
+              Initial Stock
+              <input id="newStock" required type="number" min="0" placeholder="0" />
+            </label>
+            <button type="submit" class="primary-button">Create Product</button>
+          </form>
+        </div>
+      </section>
+
+      <section id="scannerView" class="view">
+        <div class="section-card">
+          <div class="section-title">
+            <h2>AI Stock Scanner</h2>
+            <p>Upload a slip or receipt to auto-adjust stock.</p>
+          </div>
+          <div class="scanner-panel">
+            <label class="file-input-label">
+              Select receipt image
+              <input id="receiptInput" type="file" accept="image/*" />
+            </label>
+            <div id="previewWrapper" class="preview-wrapper hidden">
+              <img id="receiptPreview" alt="Receipt preview" />
+            </div>
+            <button id="scanButton" class="primary-button">Scan & Update Stock</button>
+            <div id="scannerMessage" class="scanner-message"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Main navigation">
+      <button class="nav-button active" data-view="homeView">Home</button>
+      <button class="nav-button" data-view="categoriesView">Categories</button>
+      <button class="nav-button" data-view="createView">Create</button>
+      <button class="nav-button" data-view="scannerView">Scanner</button>
+    </nav>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
