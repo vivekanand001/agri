@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useProduct } from '@/context/ProductContext';
+import { Product, useProduct } from '@/context/ProductContext';
 import { CheckCircle2, Edit2, Save, Leaf, FlaskConical, Bug } from 'lucide-react';
 
 const iconMap = {
@@ -12,6 +12,11 @@ const iconMap = {
 
 interface CategorySectionProps {
   category: 'Seeds' | 'Fertilizer' | 'Pesticides';
+}
+
+interface ProductCardProps {
+  product: Product;
+  updateProduct: (id: string, data: { price: number; stock: number }) => Promise<void>;
 }
 
 export default function CategorySection({ category }: CategorySectionProps) {
@@ -44,7 +49,7 @@ export default function CategorySection({ category }: CategorySectionProps) {
   );
 }
 
-function ProductCard({ product, updateProduct }) {
+function ProductCard({ product, updateProduct }: ProductCardProps) {
   const [isEditing, setIsEditing] = React.useState(false);
   const [price, setPrice] = React.useState(product.price.toString());
   const [stock, setStock] = React.useState(product.stock.toString());
