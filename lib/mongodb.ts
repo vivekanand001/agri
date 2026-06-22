@@ -4,17 +4,19 @@ if (!process.env.MONGODB_URI) {
   throw new Error('MONGODB_URI is not defined in environment variables.');
 }
 
-const globalForMongo = global as typeof globalThis & {
-  mongoose?: { conn: typeof mongoose | null; promise: Promise<typeof mongoose> | null };
-};
+type MongooseCache = { conn: typeof mongoose | null; promise: Promise<typeof mongoose> | null };
 
-let cached = globalForMongo.mongoose;
+const globalForMongo = global as typeof globalThis & { mongoose?: MongooseCache };
 
-if (!cached) {
-  cached = globalForMongo.mongoose = { conn: null, promise: null };
+// Ensure a cache object exists on the global scope so it persists across
+// module reloads in development (Next.js hot reloads).
+if (!globalForMongo.mongoose) {
+  globalForMongo.mongoose = { conn: null, promise: null };
 }
 
-export async function connectToDatabase() {
+const cached = globalForMongo.mongoose as MongooseCache;
+
+export async function connectToDatabase(): Promise<typeof mongoose> {
   if (cached.conn) {
     return cached.conn;
   }
@@ -24,10 +26,16 @@ export async function connectToDatabase() {
       bufferCommands: false,
       dbName: 'agri-inventory',
       autoIndex: true,
-    };
-    cached.promise = mongoose.connect(process.env.MONGODB_URI, opts);
+    } as mongoose.ConnectOptions;
+
+    // `mongoose.connect` returns `Promise<typeof mongoose>` so this matches our cache type
+    // MONGODB_URI is guaranteed to be defined due to the check at the top of this file
+    cached.promise = mongoose.connect(process.env.MONGODB_URI as string, opts);
   }
 
+  // Await the connection promise and store the resolved mongoose instance
   cached.conn = await cached.promise;
+
+  // cached.conn is guaranteed to be non-null here because it was just assigned
   return cached.conn;
 }
